@@ -1,0 +1,68 @@
+# =====================
+# Visual Studio Code
+# =====================
+.vscode/
+*.code-workspace
+
+# =====================
+# C / C++
+# =====================
+# 컴파일 결과
+*.o
+*.obj
+*.so
+*.exe
+*.out
+*.a
+*.lib
+*.dll
+
+# 빌드 폴더 (예시: CMake)
+build/
+cmake-build-*/
+
+# =====================
+# Python
+# =====================
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# 가상환경
+venv/
+env/
+ENV/
+.venv/
+.pyenv/
+
+# 패키지
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# =====================
+# Node.js
+# =====================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# 빌드 결과
+dist/
+build/
+out/
+
+# 환경 파일
+.env
+.env.local
+.env.*.local
+
+# =====================
+# OS 관련
+# =====================
+.DS_Store
+Thumbs.db
