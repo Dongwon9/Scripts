@@ -1,53 +1,44 @@
-" An example for a vimrc file.
-"
-" Maintainer:	The Vim Project <https://github.com/vim/vim>
-" Last Change:	2023 Aug 10
-" Former Maintainer:	Bram Moolenaar <Bram@vim.org>
-"
-" To use it, copy it to
-"	       for Unix:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
-"	 for MS-Windows:  $VIM\_vimrc
-"	      for Haiku:  ~/config/settings/vim/vimrc
-"	    for OpenVMS:  sys$login:.vimrc
+" 기본 예제 로드
+source $VIMRUNTIME/vimrc_example.vim
 
-" When started as "evim", evim.vim will already have done these settings, bail
-" out.
-if v:progname =~? "evim"
-  finish
-endif
+" 백업 및 스왑 파일 설정
+set backup              " 파일 편집 시 백업 생성
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
+set undofile            " undo 정보 파일 저장
+set undodir=~/.vim/undo//
 
-" Get the defaults that most users want.
-source $VIMRUNTIME/defaults.vim
+" 편집 편의 설정
+set number              " 줄 번호 표시
+set showcmd             " 입력 중인 명령 표시
+set cursorline          " 커서 위치 줄 강조
+set wildmenu            " 명령어 자동완성 메뉴
+set ignorecase          " 검색 시 대소문자 무시
+set smartcase           " 검색에 대문자 포함 시 구체적 검색
+set incsearch           " 검색 시 점진적 하이라이트
+set hlsearch            " 검색어 하이라이트 유지
 
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file (restore to previous version)
-  if has('persistent_undo')
-    set undofile	" keep an undo file (undo changes after closing)
-  endif
-endif
+" 들여쓰기 설정
+set expandtab           " 탭을 스페이스로
+set shiftwidth=4        " 자동 들여쓰기 크기
+set softtabstop=4       " 탭 입력 시 공간 수
+set autoindent          " 자동 들여쓰기 유지
+set smartindent         " 코드 스타일 지능적 자동 들여쓰기
+    
+" 화면 및 편집 최적화
+set wrap                " 긴 줄 자동 줄바꿈
+set linebreak           " 단어 단위 줄바꿈
+set scrolloff=5         " 커서 주변 최소 줄 수
+set sidescrolloff=5     " 가로 스크롤 여유
+set clipboard=unnamedplus " 시스템 클립보드 공유
+" 시각적 편의
+set showmatch           " 괄호 짝 표시
+set ruler               " 위치 표시
+set laststatus=2        " 항상 상태줄 표시
+set splitright          " 새 수직 창 오른쪽 열기
 
-if &t_Co > 2 || has("gui_running")
-  " Switch on highlighting the last used search pattern.
-  set hlsearch
-endif
+" 색상 및 테마
+syntax on               " 문법 하이라이트
 
-" Put these in an autocmd group, so that we can delete them easily.
-augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-augroup END
-
-" Add optional packages.
-"
-" The matchit plugin makes the % command work better, but it is not backwards
-" compatible.
-" The ! means the package won't be loaded right away but when plugins are
-" loaded during initialization.
-if has('syntax') && has('eval')
-  packadd! matchit
-endif
+" 파일 종료 시 저장하지 않은 변경 경고
+set confirm
