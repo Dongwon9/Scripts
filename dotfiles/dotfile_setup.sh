@@ -2,12 +2,10 @@
 
 # 스크립트가 있는 디렉터리
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
-HOME_DIR="$HOME"
-
 cd "$SCRIPT_DIR"
 
 echo "Source directory: $SCRIPT_DIR"
-echo "Home directory:   $HOME_DIR"
+echo "Home directory:   $HOME"
 echo
 
 shopt -s dotglob
@@ -22,7 +20,7 @@ for entry in "$SCRIPT_DIR"/.[!.]* "$SCRIPT_DIR"/..?*; do
         .|..|.git) continue ;;
     esac
 
-    target="$HOME_DIR/$name"
+    target="$HOME/$name"
 
     # 기존 파일(혹은 링크)이 있을 경우
     if [ -e "$target" ] || [ -L "$target" ]; then
@@ -53,3 +51,5 @@ done
 
 echo
 echo "완료."
+
+

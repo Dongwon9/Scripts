@@ -1,6 +1,18 @@
 " 기본 예제 로드
 source $VIMRUNTIME/vimrc_example.vim
-
+" 백업/스왑/undo 디렉터리 없으면 생성
+let s:vim_dirs = [expand('~/.vim/backup'), expand('~/.vim/swap'), expand('~/.vim/undo')]
+for dir in s:vim_dirs
+    if !isdirectory(dir)
+        try
+            " 대부분의 Vim/Neovim에서 부모 디렉터리까지 생성하려면 'p' 사용 가능
+            call mkdir(dir, 'p')
+        catch
+            " 실패 시 안전하게 시스템 명령으로 생성 (유닉스 계열)
+            call system('mkdir -p ' . shellescape(dir))
+        endtry
+    endif
+endfor
 " 백업 및 스왑 파일 설정
 set backup              " 파일 편집 시 백업 생성
 set backupdir=~/.vim/backup//
