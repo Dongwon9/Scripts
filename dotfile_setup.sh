@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # 스크립트가 있는 디렉터리
-SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+SCRIPT_DIR="$(dirname "$(realpath "$0")")/dotfiles"
 cd "$SCRIPT_DIR"
 
 echo "Source directory: $SCRIPT_DIR"
