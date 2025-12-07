@@ -1,4 +1,4 @@
-
+#!bash
 set -u
 IFS=$'\n\t'
 
@@ -22,6 +22,7 @@ dnf check-update &&
 sudo dnf install code"
   ["zsh-syntax-highlighting"]='git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
   ["zsh-autosuggestions"]='git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+  ["antigen"]='curl -L git.io/antigen >~/antigen.zsh'
 )
 
 # 함수: 설치 여부 묻기
@@ -48,7 +49,6 @@ for check_cmd in "${!installs[@]}"; do
   printf "항목: %s\n" "$check_cmd"
   echo "  -> 설치 명령: $install_cmd"
   if ask_yes_no "  설치하시겠습니까?"; then
-    echo "  설치 시작..."
     # 설치 명령을 실행. 실패해도 전체 루프는 계속 진행.
     if bash -c "$install_cmd"; then
       echo "  설치 성공: $check_cmd"
@@ -56,6 +56,5 @@ for check_cmd in "${!installs[@]}"; do
   else
     echo "  건너뜀."
   fi
-  echo
 done
 
