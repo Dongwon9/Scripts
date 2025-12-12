@@ -15,13 +15,9 @@ shift $((OPTIND-1))
 # 설치할 항목을 여기서 정의: 키=검사명, 값=실행할 설치 명령(완전한 쉘 명령)
 declare -A installs=(
   ["nvm"]="curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash"
-  ["omz"]='sh -c $(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)'
   ["code"]="sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
 echo -e \"[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc\" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-dnf check-update &&
-sudo dnf install code"
-  ["zsh-syntax-highlighting"]='git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
-  ["zsh-autosuggestions"]='git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+dnf check-update && sudo dnf install code"
   ["antigen"]='curl -L git.io/antigen >~/antigen.zsh'
 )
 
@@ -47,9 +43,8 @@ for check_cmd in "${!installs[@]}"; do
   install_cmd="${installs[$check_cmd]}"
 
   printf "항목: %s\n" "$check_cmd"
-  echo "  -> 설치 명령: $install_cmd"
-  if ask_yes_no "  설치하시겠습니까?"; then
-    # 설치 명령을 실행. 실패해도 전체 루프는 계속 진행.
+  echo "설치 명령: $install_cmd"
+  if ask_yes_no "설치하시겠습니까?"; then
     if bash -c "$install_cmd"; then
       echo "  설치 성공: $check_cmd"
     fi
