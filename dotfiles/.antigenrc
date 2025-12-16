@@ -1,0 +1,16 @@
+antigen use oh-my-zsh
+antigen theme robbyrussell
+
+antigen bundles <<EOBUNDLES
+    git
+    sudo
+    command-not-found
+#    nvm
+#    vscode
+    zsh-users/zsh-completions
+    zsh-users/zsh-autosuggestions
+    #반드시 맨 마지막에
+    zsh-users/zsh-syntax-highlighting   
+    
+EOBUNDLES
+antigen apply
