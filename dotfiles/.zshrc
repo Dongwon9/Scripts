@@ -5,10 +5,10 @@ antigen theme robbyrussell
 
 antigen bundle git
 antigen bundle sudo
-antigen bundle colored-man-pages
+#antigen bundle colored-man-pages
 antigen bundle command-not-found
 antigen bundle aliases
-antigen bundle extract
+#antigen bundle extract
 antigen bundle nvm
 antigen bundle vscode
 antigen bundle zsh-users/zsh-syntax-highlighting
