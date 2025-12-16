@@ -1,5 +1,11 @@
-" 기본 예제 로드
-source $VIMRUNTIME/vimrc_example.vim
+" 인코딩 설정
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8,cp949,euc-kr
+
+" 기본 예제 로드 (선택사항: 기본 설정이 필요하면 활성화)
+" source $VIMRUNTIME/vimrc_example.vim
+
 " 백업/스왑/undo 디렉터리 없으면 생성
 let s:vim_dirs = [expand('~/.vim/backup'), expand('~/.vim/swap'), expand('~/.vim/undo')]
 for dir in s:vim_dirs
@@ -36,13 +42,21 @@ set shiftwidth=4        " 자동 들여쓰기 크기
 set softtabstop=4       " 탭 입력 시 공간 수
 set autoindent          " 자동 들여쓰기 유지
 set smartindent         " 코드 스타일 지능적 자동 들여쓰기
-    
 " 화면 및 편집 최적화
 set wrap                " 긴 줄 자동 줄바꿈
 set linebreak           " 단어 단위 줄바꿈
 set scrolloff=5         " 커서 주변 최소 줄 수
 set sidescrolloff=5     " 가로 스크롤 여유
-set clipboard=unnamedplus " 시스템 클립보드 공유
+" 시스템 클립보드 공유 (unnamedplus 미지원 시 unnamed 사용)
+if has('unnamedplus')
+    set clipboard=unnamedplus
+else
+    set clipboard=unnamed
+endif
+
+" 마우스 지원
+set mouse=a             " 모든 모드에서 마우스 사용
+
 " 시각적 편의
 set showmatch           " 괄호 짝 표시
 set ruler               " 위치 표시
@@ -51,6 +65,14 @@ set splitright          " 새 수직 창 오른쪽 열기
 
 " 색상 및 테마
 syntax on               " 문법 하이라이트
+set background=dark     " 어두운 배경 최적화
+
+" 파일 타입 감지 및 플러그인
+filetype plugin indent on
 
 " 파일 종료 시 저장하지 않은 변경 경고
 set confirm
+
+" 성능 최적화
+set lazyredraw          " 매크로 실행 중 화면 갱신 최소화
+set ttyfast             " 빠른 터미널 연결 가정
