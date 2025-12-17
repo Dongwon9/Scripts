@@ -21,7 +21,7 @@ setopt HIST_SAVE_NO_DUPS
 # nvm lazy loading
 export NVM_DIR="$HOME/.nvm"
 _load_nvm() {
-  unset -f node npm npx nvm
+  unset -f node npm npx nvm pnpm
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 }
 
@@ -29,5 +29,5 @@ node() { _load_nvm; node "$@"; }
 npm() { _load_nvm; npm "$@"; }
 npx() { _load_nvm; npx "$@"; }
 nvm() { _load_nvm; nvm "$@"; }
-
+pnpm() {_load_nvm; pnpm "$@"; }
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
