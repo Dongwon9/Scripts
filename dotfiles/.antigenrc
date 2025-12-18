@@ -1,16 +1,18 @@
 antigen use oh-my-zsh
-antigen theme robbyrussell
 
 antigen bundles <<EOBUNDLES
+rupa/z
+djui/alias-tips
     git
     sudo
     command-not-found
-#    nvm
-#    vscode
+    nvm
+    vscode
     zsh-users/zsh-completions
     zsh-users/zsh-autosuggestions
     #반드시 맨 마지막에
     zsh-users/zsh-syntax-highlighting   
-    
+    unixorn/autoupdate-antigen.zshplugin
 EOBUNDLES
+antigen theme romkatv/powerlevel10k
 antigen apply
