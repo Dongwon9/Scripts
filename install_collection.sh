@@ -2,6 +2,23 @@
 set -u
 IFS=$'\n\t'
 
+# 함수: 설치 여부 묻기
+ask_yes_no() {
+  local prompt="$1"
+  if [ "$AUTO_YES" = true ]; then
+    return 0
+  fi
+
+  while true; do
+    read -r -p "$prompt [y/N]: " ans
+    case "$ans" in
+      [Yy]|[Yy][Ee][Ss]) return 0 ;;
+      [Nn]|[Nn][Oo]|"") return 1 ;;
+      *) echo "y 또는 n을 입력하세요." ;;
+    esac
+  done
+}
+
 # 자동 승인 플래그 (true면 묻지 않고 설치)
 AUTO_YES=false
 while getopts "y" opt; do
@@ -28,22 +45,7 @@ if command -v zsh &> /dev/null && [ "$SHELL" != "$(command -v zsh)" ]; then
     echo "  ✓ zsh를 기본 셸로 설정했습니다."
   fi
 fi
-# 함수: 설치 여부 묻기
-ask_yes_no() {
-  local prompt="$1"
-  if [ "$AUTO_YES" = true ]; then
-    return 0
-  fi
 
-  while true; do
-    read -r -p "$prompt [y/N]: " ans
-    case "$ans" in
-      [Yy]|[Yy][Ee][Ss]) return 0 ;;
-      [Nn]|[Nn][Oo]|"") return 1 ;;
-      *) echo "y 또는 n을 입력하세요." ;;
-    esac
-  done
-}
 
 # 반복해서 항목 처리
 for check_cmd in "${!installs[@]}"; do
