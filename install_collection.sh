@@ -18,7 +18,8 @@ declare -A installs=(
   ["code"]="sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
 echo -e \"[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc\" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null &&
 sudo dnf check-update; sudo dnf install -y code"
-  ["antigen"]='curl -L git.io/antigen >~/antigen.zsh'
+  ["antigen"]="curl -L git.io/antigen >\"$HOME\"/antigen.zsh"
+  ["D2Coding"]="curl -L -o /tmp/d2coding.zip https://github.com/naver/d2codingfont/releases/download/VER1.3.2/D2Coding-Ver1.3.2-20180524.zip && unzip /tmp/d2coding.zip -d /tmp/D2Coding && rm /tmp/d2coding.zip && sudo mv /tmp/D2Coding /usr/share/fonts/D2Coding && fc-cache -fv"
 )
 # zsh를 기본 셸로 설정 (설치되어 있고 기본 셸이 아닌 경우)
 if command -v zsh &> /dev/null && [ "$SHELL" != "$(command -v zsh)" ]; then
