@@ -1,18 +1,36 @@
-antigen use oh-my-zsh
-
 antigen bundles <<EOBUNDLES
+    # --- 기본 / 환경 ---
     rupa/z
-    djui/alias-tips
     git
+    gitfast
     sudo
     command-not-found
     nvm
+
+    # --- 패키지 / 개발 도구 ---
+    pnpm
     vscode
+
+    # --- 보조 / 자동 관리 ---
     unixorn/autoupdate-antigen.zshplugin
+    extract
+
+    # --- completion 확장 ---
     zsh-users/zsh-completions
-    zsh-users/zsh-autosuggestions  
-    zsh-users/zsh-syntax-highlighting    #반드시 맨 마지막에
-   
+
+    # --- 히스토리 / 탐색 ---
+    zsh-users/zsh-history-substring-search
+    zsh-users/zsh-navigation-tools
+    fzf
+
+    # --- 입력 보조 ---
+    djui/alias-tips
+    zsh-users/zsh-autosuggestions
+
+    # --- 반드시 맨 마지막 ---
+    zsh-users/zsh-syntax-highlighting
 EOBUNDLES
+
 antigen theme romkatv/powerlevel10k
 antigen apply
+

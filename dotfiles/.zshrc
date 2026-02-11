@@ -6,6 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
 source ~/antigen.zsh
+source ~/.zsh_aliases
 antigen init ~/.antigenrc
 export MY_EMAIL="goodongwon329@gmail.com"
 export EDITOR=vim
@@ -38,3 +39,15 @@ esac
 # pnpm end
 
 export NVM_DIR="$HOME/.nvm"
+
+fpath=("$HOME/.zsh/completions" $fpath)
+autoload -Uz compinit
+compinit
+
+
+# bit
+case ":$PATH:" in
+  *":/home/dongwon/bin:"*) ;;
+  *) export PATH="$PATH:/home/dongwon/bin" ;;
+esac
+# bit end
