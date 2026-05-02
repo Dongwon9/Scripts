@@ -21,7 +21,7 @@ antigen bundles <<EOBUNDLES
     # --- 히스토리 / 탐색 ---
     zsh-users/zsh-history-substring-search
     zsh-users/zsh-navigation-tools
-    fzf
+    unixorn/fzf-zsh-plugin 
 
     # --- 입력 보조 ---
     djui/alias-tips

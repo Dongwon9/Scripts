@@ -51,3 +51,5 @@ case ":$PATH:" in
   *) export PATH="$PATH:/home/dongwon/bin" ;;
 esac
 # bit end
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
