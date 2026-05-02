@@ -118,6 +118,10 @@ install_d2coding() {
   fc-cache -fv
 }
 
+install_claude_code() {
+    curl -fsSL https://claude.ai/install.sh | bash
+}
+
 # ── zsh 기본 셸 설정 ──────────────────────────────────────────────
 if command -v zsh &>/dev/null && [ "$SHELL" != "$(command -v zsh)" ]; then
   printf "\n항목: zsh 기본 셸\n"
@@ -134,6 +138,6 @@ run_install "nvm"      install_nvm
 run_install "antigen"  install_antigen
 run_install "VS Code"  install_vscode
 run_install "D2Coding" install_d2coding
-
+run_install "Claude Code" install_claude_code
 echo
 echo "✓ 완료."
