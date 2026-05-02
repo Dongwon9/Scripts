@@ -10,13 +10,7 @@ set fileencodings=utf-8,cp949,euc-kr
 let s:vim_dirs = [expand('~/.vim/backup'), expand('~/.vim/swap'), expand('~/.vim/undo')]
 for dir in s:vim_dirs
     if !isdirectory(dir)
-        try
-            " 대부분의 Vim/Neovim에서 부모 디렉터리까지 생성하려면 'p' 사용 가능
             call mkdir(dir, 'p')
-        catch
-            " 실패 시 안전하게 시스템 명령으로 생성 (유닉스 계열)
-            call system('mkdir -p ' . shellescape(dir))
-        endtry
     endif
 endfor
 " 백업 및 스왑 파일 설정
@@ -41,12 +35,12 @@ set expandtab           " 탭을 스페이스로
 set shiftwidth=4        " 자동 들여쓰기 크기
 set softtabstop=4       " 탭 입력 시 공간 수
 set autoindent          " 자동 들여쓰기 유지
-set smartindent         " 코드 스타일 지능적 자동 들여쓰기
 " 화면 및 편집 최적화
 set wrap                " 긴 줄 자동 줄바꿈
 set linebreak           " 단어 단위 줄바꿈
 set scrolloff=5         " 커서 주변 최소 줄 수
 set sidescrolloff=5     " 가로 스크롤 여유
+set hidden
 " 시스템 클립보드 공유 (unnamedplus 미지원 시 unnamed 사용)
 if has('unnamedplus')
     set clipboard=unnamedplus
@@ -75,4 +69,3 @@ set confirm
 
 " 성능 최적화
 set lazyredraw          " 매크로 실행 중 화면 갱신 최소화
-set ttyfast             " 빠른 터미널 연결 가정

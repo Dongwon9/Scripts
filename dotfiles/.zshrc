@@ -5,10 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
-source ~/antigen.zsh
-source ~/.zsh_aliases
+[ -f ~/antigen.zsh ] && source ~/antigen.zsh
+[ -f ~/,zsh_aliases ] && source ~/.zsh_aliases
 antigen init ~/.antigenrc
-export MY_EMAIL="goodongwon329@gmail.com"
 export EDITOR=vim
 export VISUAL="$EDITOR"
 
@@ -19,7 +18,6 @@ HISTFILE=~/.zsh_history
 HISTSIZE=50000
 SAVEHIST=50000
 setopt SHARE_HISTORY
-setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_REDUCE_BLANKS
@@ -42,7 +40,6 @@ export NVM_DIR="$HOME/.nvm"
 
 fpath=("$HOME/.zsh/completions" $fpath)
 autoload -Uz compinit
-compinit
 
 
 # bit

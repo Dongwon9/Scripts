@@ -1,6 +1,6 @@
 antigen bundles <<EOBUNDLES
     # --- 기본 / 환경 ---
-    rupa/z
+    ajeetdsouza/zoxide
     git
     gitfast
     sudo
@@ -12,7 +12,6 @@ antigen bundles <<EOBUNDLES
     vscode
 
     # --- 보조 / 자동 관리 ---
-    unixorn/autoupdate-antigen.zshplugin
     extract
 
     # --- completion 확장 ---
