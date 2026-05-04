@@ -9,7 +9,6 @@ antigen bundles <<EOBUNDLES
 
     # --- 패키지 / 개발 도구 ---
     pnpm
-    vscode
 
     # --- 보조 / 자동 관리 ---
     extract
@@ -19,7 +18,6 @@ antigen bundles <<EOBUNDLES
 
     # --- 히스토리 / 탐색 ---
     zsh-users/zsh-history-substring-search
-    zsh-users/zsh-navigation-tools
     unixorn/fzf-zsh-plugin 
 
     # --- 입력 보조 ---
@@ -29,7 +27,7 @@ antigen bundles <<EOBUNDLES
     # --- 반드시 맨 마지막 ---
     zsh-users/zsh-syntax-highlighting
 EOBUNDLES
-
+[ -f ~/.antigenrc_local ] && source ~/.antigenrc_local
 antigen theme romkatv/powerlevel10k
 antigen apply
 

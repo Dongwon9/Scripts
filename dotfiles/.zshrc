@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
 [ -f ~/antigen.zsh ] && source ~/antigen.zsh
-[ -f ~/,zsh_aliases ] && source ~/.zsh_aliases
+[ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
 antigen init ~/.antigenrc
 export EDITOR=vim
 export VISUAL="$EDITOR"
@@ -23,7 +23,8 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_IGNORE_SPACE
 setopt HIST_SAVE_NO_DUPS
-
+setopt CORRECT
+setopt AUTO_CD
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
