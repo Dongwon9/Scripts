@@ -54,14 +54,26 @@ run_install() {
 
 # ── 설치 함수 ─────────────────────────────────────────────────────
 
+install_zsh() {
+  if command -v zsh &>/dev/null; then
+    echo "  zsh가 이미 설치되어 있습니다: $(command -v zsh)"
+    return 0
+  fi
+  case "$PKG_MGR" in
+    dnf)    sudo dnf install -y zsh ;;
+    apt)    sudo apt-get install -y zsh ;;
+    pacman) sudo pacman -S --noconfirm zsh ;;
+    *)      echo "  지원하지 않는 패키지 매니저 ($PKG_MGR)"; return 1 ;;
+  esac
+}
+
 install_nvm() {
   local version="v0.40.3"
   curl -fsSo- "https://raw.githubusercontent.com/nvm-sh/nvm/${version}/install.sh" | bash
 }
 
 install_antigen() {
-  curl -fsSL https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen \
-    -o "$HOME/antigen.zsh"
+  curl -L git.io/antigen > ~/.antigen.zsh
 }
 
 install_vscode() {
@@ -122,6 +134,56 @@ install_claude_code() {
     curl -fsSL https://claude.ai/install.sh | bash
 }
 
+install_intellij() {
+  local install_dir="/opt/idea"
+
+  if [ -d "$install_dir" ]; then
+    echo "  IntelliJ IDEA가 이미 설치되어 있습니다: $install_dir"
+    return 0
+  fi
+
+  # 최신 Community Edition 버전 조회
+  local version
+  version=$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=IIC&latest=true&type=release" \
+    | grep -oP '"version":"\K[^"]+' | head -1)
+
+  if [ -z "$version" ]; then
+    echo "  버전 조회 실패. 버전을 직접 지정하려면 스크립트를 수정하세요."
+    return 1
+  fi
+
+  local tarball="ideaIC-${version}.tar.gz"
+  echo "  버전: $version — 다운로드 중..."
+  curl -fsSL -o "/tmp/${tarball}" \
+    "https://download.jetbrains.com/idea/${tarball}"
+
+  sudo mkdir -p "$install_dir"
+  sudo tar -xzf "/tmp/${tarball}" -C "$install_dir" --strip-components=1
+  rm -f "/tmp/${tarball}"
+
+  sudo ln -sf "${install_dir}/bin/idea" /usr/local/bin/idea
+
+  sudo tee /usr/share/applications/idea.desktop > /dev/null <<EOF
+[Desktop Entry]
+Name=IntelliJ IDEA Community
+Exec=${install_dir}/bin/idea %f
+Icon=${install_dir}/bin/idea.png
+Terminal=false
+Type=Application
+Categories=Development;IDE;
+StartupWMClass=jetbrains-idea-ce
+EOF
+}
+
+# ── 설치 실행 (순서 중요 시 여기서 조정) ─────────────────────────
+run_install "zsh"      install_zsh
+run_install "nvm"      install_nvm
+run_install "antigen"  install_antigen
+run_install "VS Code"  install_vscode
+run_install "D2Coding" install_d2coding
+run_install "Claude Code"    install_claude_code
+run_install "IntelliJ IDEA" install_intellij
+
 # ── zsh 기본 셸 설정 ──────────────────────────────────────────────
 if command -v zsh &>/dev/null && [ "$SHELL" != "$(command -v zsh)" ]; then
   printf "\n항목: zsh 기본 셸\n"
@@ -133,11 +195,5 @@ if command -v zsh &>/dev/null && [ "$SHELL" != "$(command -v zsh)" ]; then
   fi
 fi
 
-# ── 설치 실행 (순서 중요 시 여기서 조정) ─────────────────────────
-run_install "nvm"      install_nvm
-run_install "antigen"  install_antigen
-run_install "VS Code"  install_vscode
-run_install "D2Coding" install_d2coding
-run_install "Claude Code" install_claude_code
 echo
 echo "✓ 완료."
