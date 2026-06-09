@@ -23,32 +23,13 @@ done
 shift $((OPTIND-1))
 
 # ── 유틸 ──────────────────────────────────────────────────────────
-ask_yes_no() {
-  local prompt="$1"
-  [ "$AUTO_YES" = true ] && return 0
-  while true; do
-    read -r -p "$prompt [y/N]: " ans
-    case "$ans" in
-      [Yy]|[Yy][Ee][Ss]) return 0 ;;
-      [Nn]|[Nn][Oo]|"")  return 1 ;;
-      *) echo "y 또는 n을 입력하세요." ;;
-    esac
-  done
-}
-
-# 이름을 받아 설치 함수를 실행. 설치 여부를 물어보고 결과를 출력.
-# 사용: run_install <표시명> <함수명> [인자...]
 run_install() {
   local name="$1"; shift
   printf "\n항목: %s\n" "$name"
-  if ask_yes_no "설치하시겠습니까?"; then
-    if "$@"; then
-      echo "  ✓ 설치 성공: $name"
-    else
-      echo "  ✗ 설치 실패: $name"
-    fi
+  if "$@"; then
+    echo "  ✓ 설치 성공: $name"
   else
-    echo "  건너뜀."
+    echo "  ✗ 설치 실패: $name"
   fi
 }
 
@@ -65,6 +46,7 @@ install_zsh() {
     pacman) sudo pacman -S --noconfirm zsh ;;
     *)      echo "  지원하지 않는 패키지 매니저 ($PKG_MGR)"; return 1 ;;
   esac
+  set_zsh_default
 }
 
 install_nvm() {
@@ -175,25 +157,87 @@ StartupWMClass=jetbrains-idea-ce
 EOF
 }
 
-# ── 설치 실행 (순서 중요 시 여기서 조정) ─────────────────────────
-run_install "zsh"      install_zsh
-run_install "nvm"      install_nvm
-run_install "antigen"  install_antigen
-run_install "VS Code"  install_vscode
-run_install "D2Coding" install_d2coding
-run_install "Claude Code"    install_claude_code
-run_install "IntelliJ IDEA" install_intellij
+set_zsh_default() {
+  chsh -s "$(command -v zsh)"
+  echo "  ✓ 기본 셸 변경 완료."
+}
 
-# ── zsh 기본 셸 설정 ──────────────────────────────────────────────
-if command -v zsh &>/dev/null && [ "$SHELL" != "$(command -v zsh)" ]; then
-  printf "\n항목: zsh 기본 셸\n"
-  if ask_yes_no "zsh를 기본 셸로 설정하시겠습니까?"; then
-    chsh -s "$(command -v zsh)"
-    echo "  ✓ 기본 셸 변경 완료."
-  else
-    echo "  건너뜀."
+# ── 항목 정의 ─────────────────────────────────────────────────────
+ITEM_NAMES=("zsh" "nvm" "antigen" "VS Code" "D2Coding" "Claude Code" "IntelliJ IDEA")
+ITEM_FUNCS=(install_zsh install_nvm install_antigen install_vscode install_d2coding install_claude_code install_intellij)
+
+# ── 메뉴 표시 ─────────────────────────────────────────────────────
+show_menu() {
+  echo ""
+  echo "============================"
+  echo " 설치 항목 선택"
+  echo "============================"
+  for i in "${!ITEM_NAMES[@]}"; do
+    printf " [%d] %s\n" "$((i+1))" "${ITEM_NAMES[$i]}"
+  done
+  echo "============================"
+  printf "번호를 공백으로 구분하여 입력하세요 (예: 1 3 5)\n"
+  printf "'all' 입력 시 전체 선택, 엔터만 누르면 종료: "
+}
+
+# ── 선택 파싱 → SELECTED 배열에 인덱스 저장 ───────────────────────
+SELECTED=()
+
+parse_selection() {
+  local input="$1"
+  local count="${#ITEM_NAMES[@]}"
+
+  if [ -z "$input" ]; then
+    return
   fi
+
+  if [ "$input" = "all" ]; then
+    for i in "${!ITEM_NAMES[@]}"; do
+      SELECTED+=("$i")
+    done
+    return
+  fi
+
+  local token
+  local -a tokens
+  # 쉼표를 공백으로 치환 후 공백 기준으로 토큰 분리 (IFS=$'\n\t' 우회)
+  IFS=' ' read -ra tokens <<< "${input//,/ }"
+  for token in "${tokens[@]}"; do
+    if [[ "$token" =~ ^[0-9]+$ ]] && [ "$token" -ge 1 ] && [ "$token" -le "$count" ]; then
+      SELECTED+=("$((token-1))")
+    else
+      echo "  경고: '$token'은 유효하지 않은 번호입니다. 무시합니다."
+    fi
+  done
+}
+
+# ── 설치 실행 ─────────────────────────────────────────────────────
+if [ "$AUTO_YES" = true ]; then
+  for i in "${!ITEM_NAMES[@]}"; do
+    SELECTED+=("$i")
+  done
+else
+  show_menu
+  read -r user_input
+  parse_selection "$user_input"
 fi
+
+if [ "${#SELECTED[@]}" -eq 0 ]; then
+  echo ""
+  echo "선택된 항목이 없습니다. 종료합니다."
+  exit 0
+fi
+
+echo ""
+echo "선택된 항목:"
+for idx in "${SELECTED[@]}"; do
+  echo "  • ${ITEM_NAMES[$idx]}"
+done
+echo ""
+
+for idx in "${SELECTED[@]}"; do
+  run_install "${ITEM_NAMES[$idx]}" "${ITEM_FUNCS[$idx]}"
+done
 
 echo
 echo "✓ 완료."
